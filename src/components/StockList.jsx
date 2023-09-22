@@ -1,52 +1,52 @@
 import { useState, useEffect } from 'react';
 import finnHub from "../apis/finnHub";
+import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
 
 export const StockList = () => {
   const [watchList, setWatchList] = useState(['GOOGL', 'MSFT', 'AMZN']);
   const [stock, setStock] = useState();
 
-  useEffect(() => {
-    let isMounted = true;
-    
-    const fetchData = async () => {
-      const responses = [];
-      try {
-        const responses = await Promise.all(
-          watchList.map((stockName) => {
-            return finnHub.get("/quote", { 
-              param: {
-                symbol: stockName
-              }
-            });
-          }));
+  const valueColor = value => {
+    return value > 0 ? "success" : "danger";
+  }
 
-console.log("responses", responses)
-        
+  const renderIcon = (value) => {
+    return value > 0 ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />  
+  }
+  
+  useEffect(() => {
+    let isMounted = true
+    const fetchData = async () => {
+
+      try {
+        const responses = await Promise.all(watchList.map((stock) => {
+          return finnHub.get("/quote", {
+            params: {
+              symbol: stock
+            }
+          })
+        }))
+
         const data = responses.map((response) => {
           return {
             data: response.data,
-            symbol: response.config.param.symbol
+            symbol: response.config.params.symbol
           }
-          
-        });
 
-        console.log(data);
-
+        })
+        console.log(data)
         if (isMounted) {
-          setStock(data);
+          setStock(data)
         }
-      } catch (e) {
-        console.log(e);
-      }
-    };
 
-    fetchData();
-    
+      } catch (err) {
+
+      }
+    }
+    fetchData()
     return () => (isMounted = false);
   }, []);
-
-  console.log("stock", stock);
-  
+    
   return <div>
     <table className="table hover mt-5">
       <thead className="tableHeadColor" >
@@ -62,22 +62,21 @@ console.log("responses", responses)
         </tr>
       </thead>
       <tbody>
-        {
-          stock.map(stockData => {
+        { 
+          stock?.map(stockData => {
             return (
               <tr className="table-row" key={stockData.symbol}>
                 <th>{stockData.symbol}</th>
-                <th>{stockData.data.c}</th>
-                <th>{stockData.data.d}</th>
-                <th>{stockData.data.dp}</th>
-                <th>{stockData.data.h}</th>
-                <th>{stockData.data.l}</th>
-                <th>{stockData.data.o}</th>
-                <th>{stockData.data.pc}</th>
+                <td >{stockData.data.c}</td>
+                <td className={`text-${valueColor(stockData.data.d)}`}>{stockData.data.d}{renderIcon(stockData.data.d)}</td>
+                <td className={`text-${valueColor(stockData.data.dp)}`}>{stockData.data.dp}{renderIcon(stockData.data.td)}</td>
+                <td>{stockData.data.h}</td>
+                <td>{stockData.data.l}</td>
+                <td>{stockData.data.o}</td>
+                <td>{stockData.data.pc}</td>
               </tr>
             )
-          })
-        }
+          })}
       </tbody>
     </table>  
   </div>
