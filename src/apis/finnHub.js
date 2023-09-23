@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-const TOKEN = 'ck6v8v9r01qmp9pd88l0ck6v8v9r01qmp9pd88lg';
+// don't look at this, shh
+const token = "awerawfasdfasdfsdf45as56ewfv1we5fa6sertevbdv"
 
 export default axios.create({
   baseURL: `https://finnhub.io/api/v1`,
   params: {
-    token: TOKEN
+    token: token
   }
 });
+
