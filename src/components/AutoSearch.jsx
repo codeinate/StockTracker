@@ -1,18 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import finnHub from "../apis/finnHub";
+import { AppContext } from "../context/AppContext";
 
 export const AutoSearch = () => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
-
+  const { addStock } = useContext(AppContext);
+  
   const renderDropdown = () => {
     const dropdownClass = search ? "show" : null;
-    console.log("results", results);
     return (
       <ul className={`dropdown-menu ${dropdownClass}`} id="autoSearchDropdown">
         {
           results.map((result) => {
-            return <li className="dropdown-item" key={result.symbol}>{result.description} ({result.symbol})</li>
+            return <li 
+                     className="dropdown-item" 
+                     onClick={() => {
+                       addStock(result.symbol)
+                       setSearch("");
+                     }}
+                     key={result.symbol}>{result.description} ({result.symbol})</li>
           })}
       </ul>
     )
