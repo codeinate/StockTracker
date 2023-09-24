@@ -1,4 +1,6 @@
+
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import finnHub from "../apis/finnHub";
 import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
 import { AppProvider, AppContext } from '../context/AppContext';
@@ -6,15 +8,16 @@ import { AppProvider, AppContext } from '../context/AppContext';
 export const StockList = () => {
   const { watchList } = useContext(AppContext);
   const [stock, setStock] = useState();
+  const navigate = useNavigate();
 
   const valueColor = value => {
     return value > 0 ? "success" : "danger";
   }
 
   const renderIcon = (value) => {
-    return value > 0 ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />  
+    return value > 0 ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />
   }
-  
+
   useEffect(() => {
     let isMounted = true
     const fetchData = async () => {
@@ -47,7 +50,11 @@ export const StockList = () => {
     fetchData()
     return () => (isMounted = false);
   }, [watchList]);
-    
+
+  const handleStockSelect = (symbol) => {
+    navigate(`detail/${symbol}`)
+  }
+
   return <div>
     <table className="table hover mt-5">
       <thead className="tableHeadColor" >
@@ -63,10 +70,10 @@ export const StockList = () => {
         </tr>
       </thead>
       <tbody>
-        { 
+        {
           stock?.map(stockData => {
             return (
-              <tr className="table-row" key={stockData.symbol}>
+              <tr className="table-row" key={stockData.symbol} onClick={() => handleStockSelect(stockData.symbol)}>
                 <th>{stockData.symbol}</th>
                 <td >{stockData.data.c}</td>
                 <td className={`text-${valueColor(stockData.data.d)}`}>{stockData.data.d}{renderIcon(stockData.data.d)}</td>
@@ -79,6 +86,6 @@ export const StockList = () => {
             )
           })}
       </tbody>
-    </table>  
+    </table>
   </div>
 }
