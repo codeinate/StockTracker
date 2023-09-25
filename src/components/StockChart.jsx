@@ -1,13 +1,15 @@
-import Chart from 'react-apexcharts';
+import Chart from "react-apexcharts";
 
 export const StockChart = ({ chartData, ticker }) => {
   const { day, week, year } = chartData;
 
   const options = {
-    title: ticker,
-    align: "center",
-    style: {
-      fontSize: "24px"
+    title: {
+      text: ticker,
+      align: "center",
+      style: {
+        fontSize: "24px"
+      }
     },
     chart: {
       id: "stock data",
@@ -17,7 +19,7 @@ export const StockChart = ({ chartData, ticker }) => {
     },
     xaxis: {
       type: "datetime",
-    }
+    },
   }
 
   const series = [{
@@ -25,9 +27,14 @@ export const StockChart = ({ chartData, ticker }) => {
     data: day
   }]
 
-  return <div>
+  return <div className='mt-5 p-4 shadow-sm bg-white'>
+    Test note
+    
     <Chart
-
+      options={options}
+      series={series}
+      type="area"
+      width="100%"
     />
   </div>
 }
