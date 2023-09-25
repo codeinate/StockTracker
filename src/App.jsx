@@ -11,7 +11,7 @@ export default function App() {
         <BrowserRouter>
           <Routes >
             <Route path="/" element={<StockOverviewPage />} />
-            <Route path="/detail/:stock" element={<StockDetailPage />} />
+            <Route path="/detail/:ticker" element={<StockDetailPage />} />
           </Routes>
         </BrowserRouter>
       </AppProvider>
