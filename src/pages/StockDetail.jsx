@@ -43,7 +43,7 @@ export const StockDetailPage = () => {
               symbol: ticker,
               from: oneDay,
               to: currentTime,
-              resolution: 30,
+              resolution: 5,
             }
           }),
           finnHub.get("/stock/candle", {

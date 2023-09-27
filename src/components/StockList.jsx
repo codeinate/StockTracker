@@ -6,7 +6,7 @@ import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
 import { AppProvider, AppContext } from '../context/AppContext';
 
 export const StockList = () => {
-  const { watchList } = useContext(AppContext);
+  const { watchList, deleteStock } = useContext(AppContext);
   const [stock, setStock] = useState();
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ export const StockList = () => {
   }, [watchList]);
 
   const handleStockSelect = (symbol) => {
-    navigate(`detail/${symbol}`)
+    navigate(`detail/${symbol}`);
   }
 
   return <div>
@@ -75,13 +75,16 @@ export const StockList = () => {
             return (
               <tr className="table-row cursorPointer" key={stockData.symbol} onClick={() => handleStockSelect(stockData.symbol)}>
                 <th>{stockData.symbol}</th>
-                <td >{stockData.data.c}</td>
-                <td className={`text-${valueColor(stockData.data.d)}`}>{stockData.data.d}{renderIcon(stockData.data.d)}</td>
-                <td className={`text-${valueColor(stockData.data.dp)}`}>{stockData.data.dp}{renderIcon(stockData.data.td)}</td>
-                <td>{stockData.data.h}</td>
+                <td >{stockData.data.c.toFixed(2)}</td>
+                <td className={`text-${valueColor(stockData.data.d)}`}>{stockData.data.d.toFixed(2)}{renderIcon(stockData.data.d)}</td>
+                <td className={`text-${valueColor(stockData.data.dp)}`}>{stockData.data.dp.toFixed(2)}{renderIcon(stockData.data.td)}</td>
+                <td>{stockData.data.h.toFixed(2)}</td>
                 <td>{stockData.data.l}</td>
                 <td>{stockData.data.o}</td>
-                <td>{stockData.data.pc}</td>
+                <td>{stockData.data.pc.toFixed(2)} <button className="btn btn-danger btn-sm ml-3 d-inline-block delete-button" onClick={(e) => {
+                  e.stopPropagation();
+                  deleteStock(stockData.symbol)
+                }}>Remove</button></td>
               </tr>
             )
           })}

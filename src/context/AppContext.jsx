@@ -16,12 +16,12 @@ const AppProvider = (props) => {
   }
 
   const deleteStock = stock => {
-    setWatchList(watchlist.filter(item => {
+    setWatchList(watchList.filter(item => {
       return item !== stock;
     }));
   }
 
-  return <AppContext.Provider value={{ watchList, addStock }}>
+  return <AppContext.Provider value={{ watchList, addStock, deleteStock }}>
     {props.children}
   </AppContext.Provider>
 }
