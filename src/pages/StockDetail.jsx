@@ -9,7 +9,7 @@ const formatData = (data) => {
   return data.t.map((item, idx) => {
     return {
       x: item * 1000,
-      y: data.c[idx],
+      y: data.c[idx].toFixed(2),
     }
   });
 }
